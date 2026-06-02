@@ -1,4 +1,6 @@
 import javax.swing.*;
+
+import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener; 
@@ -32,7 +34,7 @@ public class PanelConfigJeux extends JPanel implements ActionListener
     public PanelConfigJeux(FrameConfigJeux parent)
     {
         this.parent = parent ; 
-        this.setLayout(new GridLayout(2,1));
+        this.setLayout(new BorderLayout());
         // ===============================
         // Création des composants
         // ===============================
@@ -47,7 +49,7 @@ public class PanelConfigJeux extends JPanel implements ActionListener
         this.lblNbBalise = new JLabel("Nombre de balise :") ; 
         this.txtNbBalise = new JTextField() ; 
 
-        this.panelConfiguration = new JPanel(new GridLayout(4,2,100,50)) ;
+        this.panelConfiguration = new JPanel(new GridLayout(4,2,5,5)); ;
 
         this.panelValiderAnnulerRegle = new JPanel() ; //panel avec nos deux bouttons 
         this.btnValider = new JButton("Valider");
@@ -68,9 +70,9 @@ public class PanelConfigJeux extends JPanel implements ActionListener
         this.panelValiderAnnulerRegle.add(this.btnRetourAccueil); 
 
 
-        //on ajoute no deux panel au panel principal 
-        this.add(this.panelConfiguration);
-        this.add(this.panelValiderAnnulerRegle) ; 
+        //on ajoute nos deux panel au panel principal 
+        this.add(this.panelConfiguration, BorderLayout.CENTER);
+        this.add(this.panelValiderAnnulerRegle, BorderLayout.SOUTH);
 
         this.btnAnnuler.addActionListener(this);
         this.btnValider.addActionListener(this);
@@ -115,11 +117,9 @@ public class PanelConfigJeux extends JPanel implements ActionListener
                     System.out.println("Veuillez entrez un int pour la hauteur du plateau");
                     return ; 
                 }
-                else
-                {
-                    System.out.println("Tout est carré ");
-                    /*new FrameJeux */
-                }
+               
+                System.out.println("Tout est carré ");
+                
             }
 
             if(e.getSource() == this.btnAnnuler) 

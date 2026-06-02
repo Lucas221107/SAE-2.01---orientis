@@ -12,7 +12,7 @@ public class FrameAccueil extends JFrame
 		Dimension tailleEcran = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
  
 		this.setTitle ("Orientis");
-		this.setLocation( 20, 20);
+		this.setLocation( 0, 0);
 		this.setSize( tailleEcran );
  
 		//this.ctrl = ctrl;

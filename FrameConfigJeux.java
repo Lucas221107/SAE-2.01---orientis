@@ -10,7 +10,7 @@ public class FrameConfigJeux extends JFrame
         this.add(this.panelConfig);
 
         this.setTitle("Configuration du jeu");
-        this.setSize(800, 600); // ou pack()
+        this.pack();
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         this.setVisible(true);

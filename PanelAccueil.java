@@ -74,7 +74,7 @@ public class PanelAccueil extends JPanel implements ActionListener
 		if ( e.getSource() == this.btnJouer)
 		{
 			// ouvertur de la frame config
-			new FrameConfigJeu();
+			new FrameConfigJeux();
  
 			//récupération de la fenetre pour la fermer 
 			JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
