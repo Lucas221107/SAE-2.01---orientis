@@ -13,7 +13,8 @@ public class PanelAccueil extends JPanel implements ActionListener
 {
 	
 	private JButton btnRegle;
-	private JButton btnJouer;
+	private JButton btnSolo;
+	private JButton btnMulti;
 
 	private Image   imgFond;
 
@@ -28,8 +29,11 @@ public class PanelAccueil extends JPanel implements ActionListener
 
 		Dimension dimBtn = new Dimension( 90, 30 );
 
-		this.btnJouer = new JButton("Jouer");
-		this.btnJouer.setPreferredSize(dimBtn);
+		this.btnSolo = new JButton("Jouer en solo");
+		this.btnSolo.setPreferredSize(dimBtn);
+
+		this.btnMulti = new JButton("Jouer en Multi");
+		this.btnMulti.setPreferredSize(dimBtn);
 
 		this.btnRegle = new JButton("Règle");
 		this.btnRegle.setPreferredSize(dimBtn);
@@ -44,7 +48,8 @@ public class PanelAccueil extends JPanel implements ActionListener
 		/*    Positionnement des composantes    */
 		/*--------------------------------------*/
 
-		panelBtn.add( this.btnJouer );
+		panelBtn.add( this.btnSolo  );
+		panelBtn.add( this.btnMulti );
 		panelBtn.add( this.btnRegle );
 
 		this.add ( panelBtn, gbc );
@@ -54,7 +59,8 @@ public class PanelAccueil extends JPanel implements ActionListener
 		/*----------------------------------*/
 
 
-		this.btnJouer.addActionListener(this);
+		this.btnSolo .addActionListener(this);
+		this.btnMulti.addActionListener(this);
 		this.btnRegle.addActionListener(this);
 	}
 
@@ -71,10 +77,10 @@ public class PanelAccueil extends JPanel implements ActionListener
 
 	public void actionPerformed ( ActionEvent e )
 	{
-		if ( e.getSource() == this.btnJouer)
+		if ( e.getSource() == this.btnSolo)
 		{
 			// ouvertur de la frame config
-			new FrameConfigJeu();
+			new FrameConfigJeux();
 
 			//récupération de la fenetre pour la fermer 
 			JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
@@ -93,6 +99,11 @@ public class PanelAccueil extends JPanel implements ActionListener
 
 			if ( frame != null )
 				frame.dispose();
+		}
+
+		if ( e.getSource() == this.btnMulti)
+		{
+			System.out.println("ouverture de la page multi");
 		}
 	}
 }
