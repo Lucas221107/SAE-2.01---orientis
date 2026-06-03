@@ -234,6 +234,43 @@ public class PanelConfigJeux extends JPanel implements ActionListener, DocumentL
             {
                 this.frame.switchPanel("Accueil");
             }
+
+            if ( e.getSource() == this.btnFacile)
+            {
+                this.txtHauteurPlateau.setText("8" );
+                this.txtLargeurPlateau.setText("8" );
+                this.txtNbBalise      .setText("42");
+                this.txtNbBiome       .setText("12" );
+            }
+
+            if ( e.getSource() == this.btnMoyen)
+            {
+                this.txtHauteurPlateau.setText("7" );
+                this.txtLargeurPlateau.setText("7" );
+                this.txtNbBalise      .setText("30");
+                this.txtNbBiome       .setText("9" );
+            }
+
+
+            if ( e.getSource() == this.btnDifficile)
+            {
+                this.txtHauteurPlateau.setText("7" );
+                this.txtLargeurPlateau.setText("9" );
+                this.txtNbBalise      .setText("32");
+                this.txtNbBiome       .setText("7" );
+            }
+
+
+            if ( e.getSource() == this.btnExpert)
+            {
+                this.txtHauteurPlateau.setText("9" );
+                this.txtLargeurPlateau.setText("13");
+                this.txtNbBalise      .setText("37");
+                this.txtNbBiome       .setText("7" );
+            }
+ 
+ 
+ 
  
         }
 
@@ -265,11 +302,7 @@ public class PanelConfigJeux extends JPanel implements ActionListener, DocumentL
                 if ( this.txtLargeurPlateau.getText().trim().matches("[0-9]+"))
                     largeurPlateau = Integer.parseInt( this.txtLargeurPlateau.getText().trim());
 
-                System.out.println( hauteurPlateau + " " + largeurPlateau);
-
                 panelPlateau.dessinerPlateau( hauteurPlateau, largeurPlateau);
-
-
             }
             catch( Exception e ) {}
         }
