@@ -1,4 +1,4 @@
-package src.metier;
+package source.metier;
 
 /** Represente la balise de depart d'un joueur, identifiee par une couleur.
   * Herite de Balise et sert de point de depart au chemin trace par le joueur.

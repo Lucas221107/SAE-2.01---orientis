@@ -1,4 +1,4 @@
-package src.metier;
+package source.metier;
 
 /** Represente une balise positionnee sur le plateau d'Orientis.
   * Une balise appartient a un biome et peut etre visitee par un joueur.
@@ -15,7 +15,7 @@ public class Balise
 	private TypeBiome biome;
 	private boolean   visitee;
 
-	// Attribut traduisant la composition
+	// Attribut traduisant l'association
 	private Position position;
 
 	/* - - - - - - - - - - - - - */

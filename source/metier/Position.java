@@ -1,4 +1,4 @@
-package src.metier;
+package source.metier;
 
 /** Represente une position (ligne, colonne) sur le plateau d'Orientis.
   *
