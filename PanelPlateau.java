@@ -38,7 +38,7 @@ public class PanelPlateau extends JPanel
 		{
 			for ( int cptHauteur = 0; cptHauteur < this.hauteur; cptHauteur ++)
 			{
-				g.drawRect( cptLargeur * TAILLE_CASE, cptHauteur * TAILLE_CASE, TAILLE_CASE, TAILLE_CASE);
+				g.drawRect( cptLargeur * TAILLE_CASE + TAILLE_CASE, cptHauteur * TAILLE_CASE + TAILLE_CASE, TAILLE_CASE, TAILLE_CASE);
 			}
 		}
 	}
