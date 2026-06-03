@@ -17,7 +17,9 @@ public class PanelRegle extends JPanel implements ActionListener
 	private String[]   tabPages;
 	private int        cpt;
 
-	public PanelRegle()
+	private FramePrincipale frame;
+
+	public PanelRegle( FramePrincipale frame)
 	{
 		
 		Dimension tailleEcran = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
@@ -28,6 +30,8 @@ public class PanelRegle extends JPanel implements ActionListener
 		/*    Création des composantes    */
 		/*--------------------------------*/
 		cpt = 0;
+
+		this.frame = frame;
 
 		this.tabPages = new String[] { "page1.jpg", "page2.jpg", "page3.jpg", "page4.jpg", "page5.jpg"};
 		this.image    = new ImageIcon( "./images/" + tabPages[cpt]);
@@ -101,12 +105,7 @@ public class PanelRegle extends JPanel implements ActionListener
 		
 		if ( e.getSource() == this.btnAccueil)
 		{
-			new FrameAccueil();
-			
-			JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
-
-			if ( frame != null )
-				frame.dispose();
+			this.frame.switchPanel("Accueil");
 		}
 	}
 }

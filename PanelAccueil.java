@@ -13,12 +13,13 @@ public class PanelAccueil extends JPanel implements ActionListener
 {
 	
 	private JButton btnRegle;
-	private JButton btnSolo;
-	private JButton btnMulti;
+	private JButton btnCreer;
 
 	private Image   imgFond;
 
-	public PanelAccueil()
+	private FramePrincipale frame;
+
+	public PanelAccueil( FramePrincipale frame)
 	{
 		this.setLayout( new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
@@ -27,16 +28,10 @@ public class PanelAccueil extends JPanel implements ActionListener
 		/*    Création des composantes    */
 		/*--------------------------------*/
 
-		Dimension dimBtn = new Dimension( 90, 30 );
+		this.frame = frame;
 
-		this.btnSolo = new JButton("Jouer en solo");
-		this.btnSolo.setPreferredSize(dimBtn);
-
-		this.btnMulti = new JButton("Jouer en Multi");
-		this.btnMulti.setPreferredSize(dimBtn);
-
+		this.btnCreer = new JButton("Créer plateau");
 		this.btnRegle = new JButton("Règle");
-		this.btnRegle.setPreferredSize(dimBtn);
 		
 		this.imgFond = getToolkit().getImage("./images/ecran_d_acceuil.png");
 
@@ -48,8 +43,7 @@ public class PanelAccueil extends JPanel implements ActionListener
 		/*    Positionnement des composantes    */
 		/*--------------------------------------*/
 
-		panelBtn.add( this.btnSolo  );
-		panelBtn.add( this.btnMulti );
+		panelBtn.add( this.btnCreer );
 		panelBtn.add( this.btnRegle );
 
 		this.add ( panelBtn, gbc );
@@ -59,8 +53,7 @@ public class PanelAccueil extends JPanel implements ActionListener
 		/*----------------------------------*/
 
 
-		this.btnSolo .addActionListener(this);
-		this.btnMulti.addActionListener(this);
+		this.btnCreer.addActionListener(this);
 		this.btnRegle.addActionListener(this);
 	}
 
@@ -77,33 +70,14 @@ public class PanelAccueil extends JPanel implements ActionListener
 
 	public void actionPerformed ( ActionEvent e )
 	{
-		if ( e.getSource() == this.btnSolo)
+		if ( e.getSource() == this.btnCreer)
 		{
-			// ouvertur de la frame config
-			new FrameConfigJeux();
-
-			//récupération de la fenetre pour la fermer 
-			JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
-
-			if ( frame != null )
-				frame.dispose();
+			this.frame.switchPanel("config");
 		}
 
 		if ( e.getSource() == this.btnRegle)
 		{
-			// Ouverture de la frame Regle
-			new FrameRegle();
-
-			//récupération de la fenetre pour la fermer
-			JFrame frame = ( JFrame ) SwingUtilities.getWindowAncestor(this);
-
-			if ( frame != null )
-				frame.dispose();
-		}
-
-		if ( e.getSource() == this.btnMulti)
-		{
-			System.out.println("ouverture de la page multi");
+			this.frame.switchPanel("Regle");
 		}
 	}
 }
