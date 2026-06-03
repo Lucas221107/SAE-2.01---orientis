@@ -6,11 +6,12 @@ public class FrameConfigJeux extends JFrame
     PanelConfigJeux panelConfig ; 
     public FrameConfigJeux()
     {
-        this.panelConfig = new PanelConfigJeux(this);
+        this.panelConfig = new PanelConfigJeux();
         this.add(this.panelConfig);
 
         this.setTitle("Configuration du jeu");
         this.pack();
+        this.setLocation(500, 250);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         this.setVisible(true);

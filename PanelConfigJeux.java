@@ -31,9 +31,8 @@ public class PanelConfigJeux extends JPanel implements ActionListener
 
     
 
-    public PanelConfigJeux(FrameConfigJeux parent)
+    public PanelConfigJeux()
     {
-        this.parent = parent ; 
         this.setLayout(new BorderLayout());
         // ===============================
         // Création des composants
@@ -133,7 +132,10 @@ public class PanelConfigJeux extends JPanel implements ActionListener
                 
                 new FrameAccueil() ;//ouverture de la frame de l'acceuil   
                 
-                this.parent.dispose();
+                JFrame frame = ( JFrame ) SwingUtilities.getWindowAncestor(this);
+
+			    if ( frame != null )
+				    frame.dispose();
                 
 
             }
