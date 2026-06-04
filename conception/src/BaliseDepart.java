@@ -24,7 +24,7 @@ public class BaliseDepart extends Balise
 		return this.couleur;
 	}
 
-	@Override
+	
 	public String toString()
 	{
 		return "BaliseDepart " + this.getNumero() + " (" + this.couleur + ")";

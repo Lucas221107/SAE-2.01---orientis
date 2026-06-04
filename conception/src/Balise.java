@@ -73,7 +73,7 @@ public class Balise
 		return this.voisins.contains(balise);
 	}
 
-	@Override
+	
 	public String toString()
 	{
 		return "Balise " + this.numero + " [" + this.biome + "]";
