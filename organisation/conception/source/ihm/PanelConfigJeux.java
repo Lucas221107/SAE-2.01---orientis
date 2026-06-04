@@ -2,6 +2,7 @@ import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import conception.source.Controleur ; 
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -38,7 +39,7 @@ public class PanelConfigJeux extends JPanel implements ActionListener, DocumentL
 
     
 
-    public PanelConfigJeux( FramePrincipale frame, PanelPlateau panelPlateau)
+    public PanelConfigJeux( FramePrincipale frame, PanelPlateau panelPlateau,Controleur ctrl)
     {
         Dimension tailleEcran = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
         int       hauteur     = (int) ( tailleEcran.getHeight() );
@@ -174,6 +175,7 @@ public class PanelConfigJeux extends JPanel implements ActionListener, DocumentL
             if(e.getSource() == this.btnValider)
             {
                 this.frame.switchPanel("biomes");
+                ctrl.genererPlateau();
                 this.frame.passerEtape();
             }
 
@@ -259,6 +261,8 @@ public class PanelConfigJeux extends JPanel implements ActionListener, DocumentL
             }
             catch( Exception e ) {}
         }
+
+
 
 
 

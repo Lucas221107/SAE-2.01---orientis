@@ -1,4 +1,4 @@
-package src.metier;
+package conception.source.metier;
 
 /** Represente la balise de depart d'un joueur, identifiee par une couleur.
   * Herite de Balise et sert de point de depart au chemin trace par le joueur.
@@ -29,6 +29,6 @@ public class BaliseDepart extends Balise
 
 	public String toString ()
 	{
-		return "BaliseDepart " + this.getNumero() + " (" + this.couleur + ")";
+		return "BaliseDepart " + this.getNumero() + " (" + this.couleur + ")" + " [" + this.getBiome() + "]" ;
 	}
 }
