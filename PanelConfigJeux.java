@@ -38,7 +38,7 @@ public class PanelConfigJeux extends JPanel implements ActionListener, DocumentL
 
     
 
-    public PanelConfigJeux( FramePrincipale frame)
+    public PanelConfigJeux( FramePrincipale frame, PanelPlateau panelPlateau)
     {
         Dimension tailleEcran = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
         int       hauteur     = (int) ( tailleEcran.getHeight() );
@@ -50,15 +50,8 @@ public class PanelConfigJeux extends JPanel implements ActionListener, DocumentL
         // Création des composants
         // ===============================
 
-        this.frame = frame;
-
-        JLabel lblConfig         = new JLabel("CONFIGURATION", JLabel.CENTER);
-        lblConfig.setPreferredSize( new Dimension( largeur, 45));
-        lblConfig.setBorder( BorderFactory.createLineBorder( Color.BLACK));
-
-        JLabel lblAppercu        = new JLabel("APPERCU" , JLabel.CENTER);
-        lblAppercu.setPreferredSize( new Dimension(largeur, 45));
-        lblAppercu.setBorder( BorderFactory.createLineBorder( Color.BLACK));
+        this.frame        = frame;
+        this.panelPlateau = panelPlateau;
 
         JLabel lblHauteurPlateau = new JLabel("Hauteur du plateau( en case ) : " );
         JLabel lblLargeurPlateau = new JLabel("Largeur du plateau ( en case ) : "); 
@@ -70,12 +63,10 @@ public class PanelConfigJeux extends JPanel implements ActionListener, DocumentL
         this.txtNbBiome        = new JTextField(8); 
         this.txtNbBalise       = new JTextField(8); 
 
-        //panel partie gauche
-        JPanel panelConfiguration   = new JPanel( new BorderLayout());
-        panelConfiguration.setBackground   ( new Color(230, 218,216));
-        panelConfiguration.setPreferredSize( new Dimension(largeur, hauteur));
 
         JPanel panelInfoGauche      = new JPanel( new GridLayout( 8, 1));
+        panelInfoGauche.setBackground( new Color (230, 218, 218));
+        panelInfoGauche.setPreferredSize( new Dimension( largeur, hauteur));
         panelInfoGauche.setOpaque( false );
 
         JPanel panelInfoHauteur     = new JPanel( new FlowLayout( FlowLayout.LEFT));
@@ -96,10 +87,6 @@ public class PanelConfigJeux extends JPanel implements ActionListener, DocumentL
         JPanel panelBtnValide       = new JPanel();
         panelBtnValide.setOpaque(false);
 
-        //panel partieDroite
-        JPanel panelAppercu       = new JPanel( new BorderLayout());
-        this.panelPlateau         = new PanelPlateau();
-    
         
         this.btnValider       = new JButton("Valider");
         this.btnAnnuler       = new JButton("Annuler") ; 
@@ -150,20 +137,12 @@ public class PanelConfigJeux extends JPanel implements ActionListener, DocumentL
         panelInfoGauche.add( panelInfoBalises                         );
         panelInfoGauche.add( new JLabel( "Prédéfinir un tableau"));
         panelInfoGauche.add( panelBtnDifficulte                       );
-        panelInfoGauche.add( panelBtnValide                           );
-
-        // panelConfiguration
-        panelConfiguration.add( lblConfig      , BorderLayout.NORTH  );
-        panelConfiguration.add( panelInfoGauche, BorderLayout.CENTER );
-
-        // panel appercu
-        panelAppercu.add( lblAppercu ,BorderLayout.NORTH );
-        panelAppercu.add( panelPlateau                   ); 
+        panelInfoGauche.add( new JLabel()                             );
 
 
         // panel this
-        this.add( panelConfiguration ,BorderLayout.WEST  );
-        this.add( panelAppercu       ,BorderLayout.CENTER);
+        this.add( panelInfoGauche ,BorderLayout.CENTER);
+        this.add( panelBtnValide  ,BorderLayout.SOUTH);
 
 
         /* =================================== */
@@ -194,35 +173,8 @@ public class PanelConfigJeux extends JPanel implements ActionListener, DocumentL
 
             if(e.getSource() == this.btnValider)
             {
-                if(HauteurPlateau.isEmpty() || LargeurPlateau.isEmpty() || nbBalise.isEmpty() || nbBiome.isEmpty())
-                {
-                    System.out.println("Veuillez remplir toute les informations : ");
-                    return ; 
-                }
-
-                if(!(nbBalise.matches("[0-9]+") ))// verification que c'est un int 
-                {
-                   System.out.println("Veuillez entrez un int pour les balises "); 
-                   return ; 
-                }
-
-                if(!(nbBiome.matches("[0-9]+")))
-                {
-                    System.out.println("Veuillez entrez un int pour les biomes");
-                    return ; 
-                }
-
-                if(!(HauteurPlateau.matches("[0-9]+")))
-                {
-                    System.out.println("Veuillez entrez un int pour la hauteur du plateau");
-                    return ; 
-                }
-                
-                if(!(LargeurPlateau.matches("[0-9]+")))
-                {
-                    System.out.println("Veuillez entrez un int pour la hauteur du plateau");
-                    return ; 
-                }
+                this.frame.switchPanel("biomes");
+                this.frame.passerEtape();
             }
 
             if(e.getSource() == this.btnAnnuler) 
@@ -235,7 +187,7 @@ public class PanelConfigJeux extends JPanel implements ActionListener, DocumentL
                 this.frame.switchPanel("Accueil");
             }
 
-            if ( e.getSource() == this.btnFacile)
+             if ( e.getSource() == this.btnFacile)
             {
                 this.txtHauteurPlateau.setText("8" );
                 this.txtLargeurPlateau.setText("8" );
@@ -268,9 +220,7 @@ public class PanelConfigJeux extends JPanel implements ActionListener, DocumentL
                 this.txtNbBalise      .setText("37");
                 this.txtNbBiome       .setText("7" );
             }
- 
- 
- 
+
  
         }
 
@@ -302,7 +252,10 @@ public class PanelConfigJeux extends JPanel implements ActionListener, DocumentL
                 if ( this.txtLargeurPlateau.getText().trim().matches("[0-9]+"))
                     largeurPlateau = Integer.parseInt( this.txtLargeurPlateau.getText().trim());
 
-                panelPlateau.dessinerPlateau( hauteurPlateau, largeurPlateau);
+
+                this.panelPlateau.dessinerPlateau( hauteurPlateau, largeurPlateau);
+
+
             }
             catch( Exception e ) {}
         }
