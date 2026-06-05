@@ -1,92 +1,40 @@
-package source.ihm;
+package sae.ihm;
 
-import source.Controleur;
+import sae.Controleur;
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class PanelCreationPlateau extends JPanel
+public class PanelBalise extends JPanel
 {
-	private JPanel panelBalise;
+
+	private JPanel panelBalise ; 
+	private final int nbBalise = 5;
 	private PanelPlateau panelPlateau;
 
 	private final int tailleCase = 50;
 	private final int nbCasesLargeur = 8;
 	private final int nbCasesHauteur = 8 ;
-	private final int nbBalise = 5;
 
-	public PanelCreationPlateau()
+	public PanelBalise(FramePrincipale frame , PanelPlateau panelPlateau , Controleur ctrl)
 	{
 		GereSouris gereSouris = new GereSouris();
-
-		this.setLayout(new BorderLayout());
-
-		this.panelBalise  = new JPanel(new GridLayout(1, this.nbBalise));
-		this.panelPlateau = new PanelPlateau();
+		this.setLayout(new BorderLayout() );
+		this.panelPlateau = panelPlateau;
+		this.panelBalise = new JPanel(new GridLayout(10,1));
 		//tableau de nos balises
 		for (int cpt = 0; cpt < this.nbBalise; cpt++)
 		{
-			ImageIcon img = new ImageIcon("./images/balise_" + cpt + ".png"); 
-
+			ImageIcon img = new ImageIcon("../sae/ihm/images/balise_" + cpt + ".png");
 			JLabel lblBalise = new JLabel(img);
-
+			
 			lblBalise.addMouseListener(gereSouris);
 			lblBalise.addMouseMotionListener(gereSouris);
 			this.panelBalise.add(lblBalise);
 		}
+		this.add(this.panelBalise) ; 
 
-		this.add(this.panelPlateau, BorderLayout.CENTER);
-		this.add(this.panelBalise , BorderLayout.SOUTH);
-	}
-
-	/*======================================== /
-	/===Paneau qui va acceuillir le plateau===*/
-
-	private class PanelPlateau extends JPanel
-	{
-		private Image[][] tabBalisePlateau;
-
-		public PanelPlateau()
-		{
-			this.tabBalisePlateau = new Image[nbCasesHauteur][nbCasesLargeur];
-			this.setPreferredSize(new Dimension(nbCasesHauteur * tailleCase,nbCasesLargeur * tailleCase));
-		}
-
-		public boolean estLibre(int lig, int col)
-		{
-			return this.tabBalisePlateau[lig][col] == null;
-		}
-
-		public void ajouterBalise(int lig, int col, Image img)
-		{
-			this.tabBalisePlateau[lig][col] = img;
-			repaint();
-		}
-
-		public void paintComponent(Graphics g)
-		{
-			super.paintComponent(g);
-
-			for (int cptLig = 0; cptLig < nbCasesHauteur; cptLig++)
-			{
-				for (int cptCol = 0; cptCol < nbCasesLargeur; cptCol++)
-				{
-					int x = cptCol * tailleCase;
-					int y = cptLig * tailleCase;
-
-					g.setColor(Color.GRAY);
-					g.fillRect(x, y, tailleCase, tailleCase);//dessine rectangle remplis en gris
-
-					g.setColor(Color.BLACK);
-					g.drawRect(x, y, tailleCase, tailleCase); //contour du rectangles en noir 
-
-					if (this.tabBalisePlateau[cptLig][cptCol] != null)
-					{
-						g.drawImage(this.tabBalisePlateau[cptLig][cptCol],x,y,tailleCase,tailleCase,null); //nul car image deja chargeé
-					}
-				}
-			}
-		}
 	}
 
 	/*========================================*/
@@ -104,8 +52,12 @@ public class PanelCreationPlateau extends JPanel
 		{
 			if (this.frameParent == null)
 			{
-				this.frameParent = (JFrame)SwingUtilities.getWindowAncestor(PanelCreationPlateau.this);//trouve frame 
-				this.panelAvant  = (JPanel)this.frameParent.getGlassPane();
+				this.frameParent = (JFrame)SwingUtilities.getWindowAncestor(PanelBalise.this);//trouve frame
+				JPanel panelOpaque = new JPanel();  
+				panelOpaque.setOpaque(false);//on met un panel devant qui sera pas opaque donc transparent 
+				this.frameParent.setGlassPane(panelOpaque);
+				this.panelAvant = (JPanel)this.frameParent.getGlassPane();
+
 			}
 
 			if (e.getSource() instanceof JLabel)
@@ -183,4 +135,8 @@ public class PanelCreationPlateau extends JPanel
 			this.lblBaliseActive = null;
 		}
 	}
+
+	
+
+
 }

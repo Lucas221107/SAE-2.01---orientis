@@ -1,3 +1,4 @@
+package conception.source.ihm;
 import javax.swing.*;
 import java.awt.BorderLayout;
 

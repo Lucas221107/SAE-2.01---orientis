@@ -1,6 +1,10 @@
-package conception.source.ihm ;
+package sae.ihm;
+
+import sae.Controleur;
+
 import javax.swing.*;
 import javax.swing.border.Border;
+
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -12,6 +16,7 @@ public class FramePrincipale extends JFrame
 	private PanelConfigJeux     panelConfigJeux;
 	private PanelSelectionBiome panelBiome;
 	private PanelPlateau        panelPlateau;
+	private PanelBalise         panelBalise ; 
 
 	private JPanel              panel;
 	private JLabel              lblNord;
@@ -60,7 +65,7 @@ public class FramePrincipale extends JFrame
 		/*     gérer la partie Est      */
 		/* ============================ */
 
-		this.panelPlateau = new PanelPlateau(true);
+		this.panelPlateau = new PanelPlateau( ctrl );
 
 
 		/* ============================ */
@@ -71,19 +76,22 @@ public class FramePrincipale extends JFrame
 		this.panel      = new JPanel( this.cardLayout);
 
 		//instanciation des panel
-		this.panelConfigJeux = new PanelConfigJeux    ( this, this.panelPlateau, ctrl      );
+		this.panelConfigJeux = new PanelConfigJeux    ( this, this.panelPlateau, ctrl);
 		this.panelBiome      = new PanelSelectionBiome( this, this.panelPlateau, ctrl);
+		this.panelBalise     = new PanelBalise        ( this, this.panelPlateau, ctrl);
 
-
-		cardLayout.show( this.panel, "config");
-
-		//ajout du cardLayout
-		this.panel.add ( this.panelConfigJeux, "config" );
-		this.panel.add ( this.panelBiome     , "biomes" );
+		this.panelPlateau.setPanelBiome(panelBiome);
 
 
 		
+		cardLayout.show(this.panel, "balise");
+		//ajout du cardLayout
+		this.panel.add ( this.panelConfigJeux, "config" );
+		this.panel.add ( this.panelBiome     , "biomes" );
+		this.panel.add ( this.panelBalise    , "balise" );
+		
 
+		
 
 		this.add ( panel            , BorderLayout.WEST );
 		this.add ( panelNorth       , BorderLayout.NORTH);
@@ -106,7 +114,7 @@ public class FramePrincipale extends JFrame
 		{
 			case 0 : this.lblNord.setText( "Configurez le plateau "            ); break;
 			case 1 : this.lblNord.setText( "Placez les biomes"                 ); break;
-			case 2 : this.lblNord.setText( "Placez les balise"                 ); break;
+			case 2 : this.lblNord.setText( "Placez les balises"                 ); break;
 			case 3 : this.lblNord.setText( "Selectionnez les points de départs"); break;
 		}
 

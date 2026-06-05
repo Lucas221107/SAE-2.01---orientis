@@ -1,9 +1,10 @@
-package conception.source.ihm;
+package sae.ihm;
+
+import sae.Controleur;
+
 import javax.swing.*;
-import javax.swing.border.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import conception.source.Controleur ; 
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -11,7 +12,7 @@ import java.awt.FlowLayout;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener; 
+import java.awt.event.ActionListener;
 
 public class PanelConfigJeux extends JPanel implements ActionListener, DocumentListener
 {
@@ -34,13 +35,13 @@ public class PanelConfigJeux extends JPanel implements ActionListener, DocumentL
     private JButton btnDifficile;
     private JButton btnExpert   ; 
     
-    private PanelPlateau panelPlateau;
-
+    private PanelPlateau    panelPlateau;
     private FramePrincipale frame;
+    private Controleur      ctrl;
 
     
 
-    public PanelConfigJeux( FramePrincipale frame, PanelPlateau panelPlateau,Controleur ctrl)
+    public PanelConfigJeux( FramePrincipale frame, PanelPlateau panelPlateau, Controleur ctrl)
     {
         Dimension tailleEcran = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
         int       hauteur     = (int) ( tailleEcran.getHeight() );
@@ -48,12 +49,15 @@ public class PanelConfigJeux extends JPanel implements ActionListener, DocumentL
        
        
         this.setLayout( new BorderLayout());
+        this.setBorder( BorderFactory.createLineBorder( Color.BLACK ));
+		this.setBackground( new Color (230, 218, 218));
         // ===============================
         // Création des composants
         // ===============================
 
         this.frame        = frame;
         this.panelPlateau = panelPlateau;
+        this.ctrl         = ctrl;
 
         JLabel lblHauteurPlateau = new JLabel("Hauteur du plateau( en case ) : " );
         JLabel lblLargeurPlateau = new JLabel("Largeur du plateau ( en case ) : "); 
@@ -166,66 +170,75 @@ public class PanelConfigJeux extends JPanel implements ActionListener, DocumentL
     }
 
 
-        public void actionPerformed(ActionEvent e)
+    public void actionPerformed(ActionEvent e)
+    {
+        int hauteurPlateau = 0;
+        int largeurPlateau = 0;
+        int nbBalise       = 0;
+        int nbBiome        = 0;
+
+        if(e.getSource() == this.btnAnnuler) 
         {
-            String HauteurPlateau = this.txtHauteurPlateau.getText()  ;
-            String LargeurPlateau = this.txtLargeurPlateau.getText(); 
-            String nbBalise = this.txtNbBalise.getText();
-            String nbBiome = this.txtNbBiome.getText(); 
-
-            if(e.getSource() == this.btnValider)
-            {
-                this.frame.switchPanel("biomes");
-                ctrl.genererPlateau();
-                this.frame.passerEtape();
-            }
-
-            if(e.getSource() == this.btnAnnuler) 
-            {
-                this.supprimerSaisie();
-            }
-
-            if(e.getSource() == this.btnRetourAccueil)
-            {
-                this.frame.switchPanel("Accueil");
-            }
-
-             if ( e.getSource() == this.btnFacile)
-            {
-                this.txtHauteurPlateau.setText("8" );
-                this.txtLargeurPlateau.setText("8" );
-                this.txtNbBalise      .setText("42");
-                this.txtNbBiome       .setText("12" );
-            }
-
-            if ( e.getSource() == this.btnMoyen)
-            {
-                this.txtHauteurPlateau.setText("7" );
-                this.txtLargeurPlateau.setText("7" );
-                this.txtNbBalise      .setText("30");
-                this.txtNbBiome       .setText("9" );
-            }
-
-
-            if ( e.getSource() == this.btnDifficile)
-            {
-                this.txtHauteurPlateau.setText("7" );
-                this.txtLargeurPlateau.setText("9" );
-                this.txtNbBalise      .setText("32");
-                this.txtNbBiome       .setText("7" );
-            }
-
-
-            if ( e.getSource() == this.btnExpert)
-            {
-                this.txtHauteurPlateau.setText("9" );
-                this.txtLargeurPlateau.setText("13");
-                this.txtNbBalise      .setText("37");
-                this.txtNbBiome       .setText("7" );
-            }
-
- 
+            this.supprimerSaisie();
         }
+
+        if(e.getSource() == this.btnRetourAccueil)
+        {
+            this.frame.switchPanel("Accueil");
+        }
+
+            if ( e.getSource() == this.btnFacile)
+        {
+            this.txtHauteurPlateau.setText("8" );
+            this.txtLargeurPlateau.setText("8" );
+            this.txtNbBalise      .setText("42");
+            this.txtNbBiome       .setText("12" );
+        }
+
+        if ( e.getSource() == this.btnMoyen)
+        {
+            this.txtHauteurPlateau.setText("7" );
+            this.txtLargeurPlateau.setText("7" );
+            this.txtNbBalise      .setText("30");
+            this.txtNbBiome       .setText("9" );
+        }
+
+
+        if ( e.getSource() == this.btnDifficile)
+        {
+            this.txtHauteurPlateau.setText("7" );
+            this.txtLargeurPlateau.setText("9" );
+            this.txtNbBalise      .setText("32");
+            this.txtNbBiome       .setText("7" );
+        }
+
+
+        if ( e.getSource() == this.btnExpert)
+        {
+            this.txtHauteurPlateau.setText("9" );
+            this.txtLargeurPlateau.setText("13");
+            this.txtNbBalise      .setText("37");
+            this.txtNbBiome       .setText("7" );
+        }
+
+        hauteurPlateau = Integer.parseInt( this.txtHauteurPlateau.getText() );
+        largeurPlateau = Integer.parseInt( this.txtLargeurPlateau.getText() ); 
+        nbBalise       = Integer.parseInt( this.txtNbBalise      .getText() );
+        nbBiome        = Integer.parseInt( this.txtNbBiome       .getText() ); 
+
+        if(e.getSource() == this.btnValider)
+        {
+
+            System.out.println( "lig = " + hauteurPlateau + "\n col = " + largeurPlateau + "\n nbBiome = " + nbBiome + "\n nbBalise = " + nbBalise);
+            this.frame.switchPanel("biomes");
+            this.frame.passerEtape();
+            this.ctrl.genererPlateau( largeurPlateau, hauteurPlateau, nbBiome, nbBalise);
+            this.panelPlateau.setNbBiomeMax( nbBiome );
+            this.panelPlateau.setInteractif(true);
+        }
+
+
+    }
 
 
         public void insertUpdate ( DocumentEvent e ) { this.mettreAJour(); }
@@ -263,7 +276,7 @@ public class PanelConfigJeux extends JPanel implements ActionListener, DocumentL
             catch( Exception e ) {}
         }
 
-
+        
 
 
 
