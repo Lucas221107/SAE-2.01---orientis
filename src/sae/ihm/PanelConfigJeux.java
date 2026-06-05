@@ -1,5 +1,8 @@
+package sae.ihm;
+
+import sae.Controleur;
+
 import javax.swing.*;
-import javax.swing.border.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -9,7 +12,7 @@ import java.awt.FlowLayout;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener; 
+import java.awt.event.ActionListener;
 
 public class PanelConfigJeux extends JPanel implements ActionListener, DocumentListener
 {
@@ -32,13 +35,13 @@ public class PanelConfigJeux extends JPanel implements ActionListener, DocumentL
     private JButton btnDifficile;
     private JButton btnExpert   ; 
     
-    private PanelPlateau panelPlateau;
-
+    private PanelPlateau    panelPlateau;
     private FramePrincipale frame;
+    private Controleur      ctrl;
 
     
 
-    public PanelConfigJeux( FramePrincipale frame, PanelPlateau panelPlateau)
+    public PanelConfigJeux( FramePrincipale frame, PanelPlateau panelPlateau, Controleur ctrl)
     {
         Dimension tailleEcran = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
         int       hauteur     = (int) ( tailleEcran.getHeight() );
@@ -46,12 +49,15 @@ public class PanelConfigJeux extends JPanel implements ActionListener, DocumentL
        
        
         this.setLayout( new BorderLayout());
+        this.setBorder( BorderFactory.createLineBorder( Color.BLACK ));
+		this.setBackground( new Color (230, 218, 218));
         // ===============================
         // Création des composants
         // ===============================
 
         this.frame        = frame;
         this.panelPlateau = panelPlateau;
+        this.ctrl         = ctrl;
 
         JLabel lblHauteurPlateau = new JLabel("Hauteur du plateau( en case ) : " );
         JLabel lblLargeurPlateau = new JLabel("Largeur du plateau ( en case ) : "); 
@@ -166,16 +172,10 @@ public class PanelConfigJeux extends JPanel implements ActionListener, DocumentL
 
         public void actionPerformed(ActionEvent e)
         {
-            String HauteurPlateau = this.txtHauteurPlateau.getText()  ;
-            String LargeurPlateau = this.txtLargeurPlateau.getText(); 
-            String nbBalise = this.txtNbBalise.getText();
-            String nbBiome = this.txtNbBiome.getText(); 
-
-            if(e.getSource() == this.btnValider)
-            {
-                this.frame.switchPanel("biomes");
-                this.frame.passerEtape();
-            }
+            int hauteurPlateau = 0;
+            int largeurPlateau = 0;
+            int nbBalise       = 0;
+            int nbBiome        = 0;
 
             if(e.getSource() == this.btnAnnuler) 
             {
@@ -219,6 +219,19 @@ public class PanelConfigJeux extends JPanel implements ActionListener, DocumentL
                 this.txtLargeurPlateau.setText("13");
                 this.txtNbBalise      .setText("37");
                 this.txtNbBiome       .setText("7" );
+            }
+
+            hauteurPlateau = Integer.parseInt( this.txtHauteurPlateau.getText() );
+            largeurPlateau = Integer.parseInt( this.txtLargeurPlateau.getText() ); 
+            nbBalise       = Integer.parseInt(this.txtNbBalise       .getText() );
+            nbBiome        = Integer.parseInt(this.txtNbBiome        .getText() ); 
+
+            if(e.getSource() == this.btnValider)
+            {
+                this.frame.switchPanel("biomes");
+                this.frame.passerEtape();
+                this.ctrl.genererPlateau( largeurPlateau, hauteurPlateau, nbBiome, nbBalise);
+                this.panelPlateau.setInteractif(true);
             }
 
  

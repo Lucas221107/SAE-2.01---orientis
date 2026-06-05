@@ -1,6 +1,11 @@
+package sae.ihm;
+
+import sae.Controleur;
+
 import javax.swing.*;
 
 import java.awt.Color;
+import java.awt.Image;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -15,13 +20,15 @@ public class PanelPlateau extends JPanel
 	private Color[][] tabColors;
 	
 	private boolean interactif;
-	private PanelSelectionBiome panelSelectionBiome;
+	private PanelSelectionBiome panelBiome;
+	private Controleur          ctrl;
 
-	public PanelPlateau( boolean interactif)
-	{
+	public PanelPlateau( Controleur ctrl)
+	{		
 		this.largeur    = 0;
 		this.hauteur    = 0;
-		this.interactif = interactif;
+		this.ctrl       = ctrl;
+		this.interactif = false;
 
 		this.addMouseListener( new GererSouris());
 	}
@@ -33,9 +40,10 @@ public class PanelPlateau extends JPanel
 
 		public void mouseClicked ( MouseEvent e)
 		{
-			if ( ! interactif )
+	
+			if ( ! PanelPlateau.this.interactif )
 				return;
-
+			
 			if ( largeur == 0 || hauteur == 0)
 				return;
 
@@ -49,7 +57,8 @@ public class PanelPlateau extends JPanel
 			{
 				if ( tabColors[lig][col] == null)
 				{
-					Color coul = panelSelectionBiome.getColorBiome();
+					String biome = PanelPlateau.this.panelBiome.getNomBiome();
+					Color coul = PanelPlateau.this.ctrl.getColorBiome( biome );
 					tabColors[lig][col] = coul;
 					repaint();
 				}
@@ -60,7 +69,7 @@ public class PanelPlateau extends JPanel
 
 	public void setPanelSelectionBiomes ( PanelSelectionBiome panel)
 	{
-		this.panelSelectionBiome = panel;
+		this.panelBiome = panel;
 	}
 
 
@@ -113,6 +122,16 @@ public class PanelPlateau extends JPanel
 		}
 	}
 
+
+	public void setPanelBiome( PanelSelectionBiome panelBiome)
+	{
+		this.panelBiome = panelBiome;
+	}
+
+	public void setInteractif ( boolean b)
+	{
+		this.interactif = b;
+	}
 
 
 }

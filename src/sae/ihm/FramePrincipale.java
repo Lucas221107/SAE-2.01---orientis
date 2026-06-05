@@ -1,3 +1,7 @@
+package sae.ihm;
+
+import sae.Controleur;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 
@@ -60,7 +64,7 @@ public class FramePrincipale extends JFrame
 		/*     gérer la partie Est      */
 		/* ============================ */
 
-		this.panelPlateau = new PanelPlateau(true);
+		this.panelPlateau = new PanelPlateau( ctrl );
 
 
 		/* ============================ */
@@ -71,8 +75,10 @@ public class FramePrincipale extends JFrame
 		this.panel      = new JPanel( this.cardLayout);
 
 		//instanciation des panel
-		this.panelConfigJeux = new PanelConfigJeux    ( this, this.panelPlateau      );
+		this.panelConfigJeux = new PanelConfigJeux    ( this, this.panelPlateau, ctrl);
 		this.panelBiome      = new PanelSelectionBiome( this, this.panelPlateau, ctrl);
+
+		this.panelPlateau.setPanelBiome(panelBiome);
 
 
 		cardLayout.show( this.panel, "config");
@@ -80,7 +86,6 @@ public class FramePrincipale extends JFrame
 		//ajout du cardLayout
 		this.panel.add ( this.panelConfigJeux, "config" );
 		this.panel.add ( this.panelBiome     , "biomes" );
-
 
 		
 

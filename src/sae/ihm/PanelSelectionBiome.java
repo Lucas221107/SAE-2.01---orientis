@@ -1,5 +1,8 @@
+package sae.ihm;
+
+import sae.Controleur;
+
 import javax.swing.*;
-import javax.swing.border.Border;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
@@ -10,15 +13,15 @@ import java.awt.event.*;
 
 public class PanelSelectionBiome extends JPanel implements ActionListener
 {
-	private FramePrincipale    framePrincipale;
-	private PanelPlateau       panelPlateau;
-	private JButton            btnValider;
-	private JButton            btnSupprimer;
-	private JButton            btnRetour;
+	private FramePrincipale       framePrincipale;
+	private PanelPlateau          panelPlateau;
+	private JButton               btnValider;
+	private JButton               btnSupprimer;
+	private JButton               btnRetour;
 	
-	private JComboBox<String>  cbBiomes;
+	private JComboBox<String>     cbBiomes;
 
-	private Controleur         ctrl;
+	private Controleur            ctrl;
 
 	public PanelSelectionBiome ( FramePrincipale frame, PanelPlateau panelPlateau, Controleur ctrl )
 	{
@@ -44,7 +47,7 @@ public class PanelSelectionBiome extends JPanel implements ActionListener
 		this.btnSupprimer = new JButton("Supprimer");
 		this.btnRetour    = new JButton("Retour"   );
 
-		this.cbBiomes     = new JComboBox<>( this.ctrl.initTabBiomes());
+		this.cbBiomes     = new JComboBox<>( this.ctrl.getTabBiome());
 		this.panelPlateau.setPanelSelectionBiomes(this);
 
 		JLabel lblTypeBiome = new JLabel("Type de biomes"      );
@@ -116,24 +119,8 @@ public class PanelSelectionBiome extends JPanel implements ActionListener
 	}
 
 
-	public Color getColorBiome()
+	public String getNomBiome()
 	{
-		String biome = (String) this.cbBiomes.getSelectedItem();
-
-		switch ( biome )
-		{
-			case "Forêt dense"  : return Color.GRAY;
-			case "Forêt claire" : return Color.LIGHT_GRAY;
-			case "Prairie"      : return Color.GREEN;
-			case "Bruyère"      : return Color.ORANGE;
-			case "Marais"       : return Color.BLUE;
-			case "Zone rocheuse": return Color.BLACK;
-			case "Montagne"     : return Color.PINK;
-			case "Dune"         : return Color.YELLOW;
-			case "Urbain"       : return Color.RED;
-			case "Industriel"   : return Color.MAGENTA;
-
-			default        : return Color.WHITE;
-		}
+		return (String) this.cbBiomes.getSelectedItem();
 	}
 }
