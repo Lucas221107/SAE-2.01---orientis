@@ -1,15 +1,13 @@
 package conception.source;
 
+import conception.source.ihm.FramePrincipale;
+import conception.source.metier.*;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Scanner;
+import java.awt.Color;
 
-import conception.source.ihm.FramePrincipale;
-import conception.source.metier.Balise;
-import conception.source.metier.BaliseDepart;
-import conception.source.metier.Plateau;
-import conception.source.metier.Position;
-import conception.source.metier.TypeBiome;
 
 public class Controleur 
 {
@@ -128,5 +126,37 @@ public class Controleur
 			System.err.println ( "Erreur lors du chargement du plateau : " + e.getMessage() );
 			return false;
 		}
-	}	
+	}
+
+
+
+	public String[] getTabBiome()
+	{
+		TypeBiome[] tabNom    = TypeBiome.values();
+		String   [] tabBiomes = new String[ TypeBiome.values().length];
+
+		for ( int cpt = 0; cpt < tabBiomes.length; cpt ++)
+			tabBiomes[cpt] = tabNom[cpt].getNom();
+
+		return tabBiomes;
+	}
+
+
+	public Color getColorBiome ( String s)
+	{
+		for ( TypeBiome biome : TypeBiome.values())
+		{
+			if ( biome.getNom().equals(s))
+				return biome.getCouleur();
+		}
+
+		return null;
+	}
+
+
+	public static void main ( String[] args)
+	{
+		new Controleur();
+	}
+	
 }
