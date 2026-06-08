@@ -1,4 +1,4 @@
-# SAÉ 2.01, 2.02 et 2.05 — Jeu de plateau Orientis
+# SAÉ 2.01, 2.02 et 2.05 — Jeu de plateau Orientis  SAE-2.01---orientis
 
 SAÉ avec du Java organisé en **MVC** : un `Controleur`, une couche
 **métier** (logique du jeu) et une couche **ihm** (interface graphique).
@@ -70,7 +70,7 @@ java conception.Controleur
 
 ### Prérequis
 
-- **JAVA** ou version supérieure (`javac` et `java` disponibles dans le PATH)
+- **JDK** (`javac` et `java` disponibles dans le PATH)
 ```bash
 java -version
 javac -version
