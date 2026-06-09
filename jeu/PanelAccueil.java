@@ -1,7 +1,6 @@
 import javax.swing.*;
 import java.awt.event.*;
 
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Image;
 import java.awt.Graphics;
@@ -90,7 +89,7 @@ public class PanelAccueil extends JPanel implements ActionListener
 
 		if ( e.getSource() == this.btnMulti )
 		{
-
+			this.frame.switchPanel("multi");
 		}
 
 		if ( e.getSource() == this.btnRegle)

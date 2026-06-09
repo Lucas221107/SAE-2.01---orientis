@@ -1,13 +1,14 @@
 import javax.swing.*;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.CardLayout;
 
 public class FramePrincipale extends JFrame
 {
-	private PanelAccueil panelAccueil;
-	private PanelRegle   panelRegle  ;
-	private Controleur   ctrl        ;
+	private PanelAccueil    panelAccueil;
+	private StyleComposante style;
+	private PanelRegle      panelRegle  ;
+	private PanelMulti      panelMulti  ;
+	private Controleur      ctrl        ;
 
 	private int          hauteur     ;
 	private int          largeur     ;
@@ -29,17 +30,20 @@ public class FramePrincipale extends JFrame
 		this.setSize    ( this.getDimensionPanel() );
 
 		this.ctrl = ctrl;
+		this.style = new StyleComposante();
 
 		this.cardLayout = new CardLayout();
 		this.panelPrincipal = new JPanel ( this.cardLayout );
 		
 		this.panelAccueil = new PanelAccueil( this );
 		this.panelRegle   = new PanelRegle  ( this );
+		this.panelMulti   = new PanelMulti  ( this , this.style);
 
 		//ajout des panel avec le cardLayout
 
 		this.panelPrincipal.add( this.panelAccueil, "accueil");
 		this.panelPrincipal.add( this.panelRegle  , "regle"  );
+		this.panelPrincipal.add( this.panelMulti  , "multi"  );
 
 		this.cardLayout.show ( this.panelPrincipal, "accueil");
 
@@ -57,5 +61,4 @@ public class FramePrincipale extends JFrame
 	{
 		this.cardLayout.show ( this.panelPrincipal, nom );
 	}
-	
 }
