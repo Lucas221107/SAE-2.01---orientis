@@ -57,16 +57,23 @@ public class Manche
 	 */
 	public Fanion piocherFanion()
 	{
-		return null;
+		/* On pioche le fanion et on le retient comme fanion courant de la manche. */
+		this.fanionCourant = this.pioche.piocher();
+
+		/* La manche se termine au 6e fanion fonce : on incremente le compteur. */
+		if (this.fanionCourant != null && this.fanionCourant.estFonce())
+			this.nbFoncesTires++;
+
+		return this.fanionCourant;
 	}
 
 	/**
-	 * Indique si la manche est terminée (sixième fanion foncé tiré).
+	 * Indique si la manche est terminée (sixième fanion foncé tiré, ou pioche vide).
 	 *
 	 * @return {@code true} si la manche est terminée
 	 */
 	public boolean estTerminee()
 	{
-		return false;
+		return this.nbFoncesTires >= 6 || this.pioche.estVide();
 	}
 }

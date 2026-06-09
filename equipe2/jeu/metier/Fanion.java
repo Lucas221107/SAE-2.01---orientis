@@ -50,7 +50,7 @@ public class Fanion
 	 */
 	public boolean estJoker()
 	{
-		return false;
+		return this.numero == 0;
 	}
 
 	/**
@@ -60,27 +60,32 @@ public class Fanion
 	 */
 	public boolean estFonce()
 	{
-		return false;
+		return this.estFonce;
 	}
 
 	/**
 	 * Indique si le fanion correspond à un numéro de balise donné.
+	 * Un joker correspond à n'importe quel numéro ; sinon le numéro doit être identique.
 	 *
 	 * @param numero numéro de balise à tester
 	 * @return {@code true} si le fanion permet de capturer ce numéro
 	 */
 	public boolean correspond(int numero)
 	{
-		return false;
+		return this.estJoker() || this.numero == numero;
 	}
 
 	/**
-	 * Retourne une représentation textuelle du fanion.
+	 * Retourne une représentation textuelle du fanion sous la forme
+	 * {@code "Clair 5"}, {@code "Fonce 3"} ou {@code "Fonce ∞"} pour un joker.
 	 *
 	 * @return chaîne représentant le fanion
 	 */
 	public String toString()
 	{
-		return null;
+		String type   = this.estFonce      ? "Fonce" : "Clair"          ;
+		String valeur = this.estJoker()     ? "∞"     : "" + this.numero ;
+
+		return type + " " + valeur;
 	}
 }

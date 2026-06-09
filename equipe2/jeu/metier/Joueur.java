@@ -88,7 +88,28 @@ public class Joueur
 	 */
 	public int calculerScoreManche()
 	{
-		return 0;
+		int maxDansUnBiome = 0;
+		int nbBiomes       = 0;
+
+		/* Pour chaque biome existant, on compte les balises capturees de ce biome. */
+		for (TypeBiome biome : TypeBiome.values())
+		{
+			int nbBalisesBiome = 0;
+			for (Balise balise : this.balisesCapturees)
+				if (balise.getBiome() == biome)
+					nbBalisesBiome++;
+
+			/* Un biome avec au moins une balise est un biome decouvert. */
+			if (nbBalisesBiome > 0)
+				nbBiomes++;
+
+			/* On retient le plus grand nombre de balises dans un seul biome. */
+			if (nbBalisesBiome > maxDansUnBiome)
+				maxDansUnBiome = nbBalisesBiome;
+		}
+
+		/* Score = nb max de balises dans un seul biome  x  nb de biomes decouverts. */
+		return maxDansUnBiome * nbBiomes;
 	}
 
 	/**
@@ -96,13 +117,21 @@ public class Joueur
 	 */
 	public void ajouterScoreManche()
 	{
+		this.scoreTotal += this.calculerScoreManche();
 	}
 
 	/**
-	 * Réinitialise l'état du joueur pour une nouvelle manche
-	 * (chemin effacé, balises capturées vidées).
+	 * Réinitialise l'état du joueur pour une nouvelle manche :
+	 * efface le chemin tracé, remet à non visitées les balises capturées,
+	 * puis vide la liste des balises capturées.
 	 */
 	public void reinitialiserManche()
 	{
+		this.chemin.effacer();
+
+		for (Balise balise : this.balisesCapturees)
+			balise.setVisitee(false);
+
+		this.balisesCapturees.clear();
 	}
 }

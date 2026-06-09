@@ -1,6 +1,7 @@
 package jeu.metier;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Représente la pioche de fanions d'une manche. Elle contient les fanions
@@ -41,6 +42,7 @@ public class Pioche
 	 */
 	public void melanger()
 	{
+		Collections.shuffle(this.fanions);
 	}
 
 	/**
@@ -50,7 +52,11 @@ public class Pioche
 	 */
 	public Fanion piocher()
 	{
-		return null;
+		if (this.estVide())
+			return null;
+
+		/* On retire le dernier fanion : la pioche etant melangee, le choix est equivalent. */
+		return this.fanions.remove(this.fanions.size() - 1);
 	}
 
 	/**
@@ -60,13 +66,29 @@ public class Pioche
 	 */
 	public boolean estVide()
 	{
-		return false;
+		return this.fanions.isEmpty();
 	}
 
 	/**
-	 * Reconstitue la pioche avec l'ensemble complet des fanions, puis la mélange.
+	 * Reconstitue la pioche avec l'ensemble complet des fanions (5 clairs,
+	 * 5 foncés numérotés de 1 à 5, plus 2 jokers de numéro 0 : un clair et un
+	 * foncé), puis la mélange.
 	 */
 	public void reconstituer()
 	{
+		this.fanions.clear();
+
+		/* 5 fanions clairs et 5 fanions fonces, numerotes de 1 a 5. */
+		for (int cpt = 1; cpt <= 5; cpt++)
+		{
+			this.fanions.add(new Fanion(cpt, false)); // clair
+			this.fanions.add(new Fanion(cpt, true )); // fonce
+		}
+
+		/* 2 jokers (numero 0) : un clair et un fonce. */
+		this.fanions.add(new Fanion(0, false));
+		this.fanions.add(new Fanion(0, true ));
+
+		this.melanger();
 	}
 }
