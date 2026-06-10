@@ -84,7 +84,7 @@ public class Fanion
 	public String toString()
 	{
 		String type   = this.estFonce      ? "Fonce" : "Clair"          ;
-		String valeur = this.estJoker()     ? "∞"     : "" + this.numero ;
+		String valeur = this.estJoker()     ? "" + 0     : "" + this.numero ;
 
 		return type + " " + valeur;
 	}
