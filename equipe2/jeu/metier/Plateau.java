@@ -1,9 +1,7 @@
 package jeu.metier;
 
-import java.io.PrintWriter;
-import java.io.OutputStreamWriter;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Plateau de l'application de conception d'Orientis.
@@ -105,6 +103,34 @@ public class Plateau
 		return null;
 	}
 
+	/**
+	 * Retourne la liste de toutes les balises de départ présentes sur le plateau.
+	 *
+	 * @return liste des {@link BaliseDepart}, vide si aucune n'existe
+	 */
+	public List<BaliseDepart> getBalisesDepart()
+	{
+		List<BaliseDepart> departs = new ArrayList<BaliseDepart>();
+
+		if (this.balises == null)
+			return departs;
+
+		for (int lig = 0; lig < this.nbLignes; lig++)
+		{
+			for (int col = 0; col < this.nbColonnes; col++)
+			{
+				Balise balise = this.balises[lig][col];
+				if (balise instanceof BaliseDepart)
+					departs.add((BaliseDepart) balise);
+			}
+		}
+
+		return departs;
+	}
+
+	/** @return le tableau des noms de biome par case (peut être {@code null}) */
+	public String[][] getTabStringBiome() { return this.tabStringBiome; }
+
 	/* - - - - - - - - - - - - - */
 	/* Modificateurs             */
 	/* - - - - - - - - - - - - - */
@@ -187,177 +213,63 @@ public class Plateau
 	 */
 	public void calculerLiaisons()
 	{
-		int[][] directions =
-		{
-			{ -1,  0 }, // Nord
-			{ -1,  1 }, // Nord-Est
-			{  0,  1 }, // Est
-			{  1,  1 }, // Sud-Est
-			{  1,  0 }, // Sud
-			{  1, -1 }, // Sud-Ouest
-			{  0, -1 }, // Ouest
-			{ -1, -1 }  // Nord-Ouest
-		};
-
 		for (int lig = 0; lig < this.nbLignes; lig++)
 		{
 			for (int col = 0; col < this.nbColonnes; col++)
 			{
 				Balise courante = this.balises[lig][col];
 				if (courante != null)
-				{
-					for (int[] dir : directions)
-					{
-						int     ligVoisin    = lig + dir[0];
-						int     colVoisin    = col + dir[1];
-						boolean trouveVoisin = false       ;
-
-						/* Avance dans la direction jusqu'à trouver une balise ou sortir */
-						while (!trouveVoisin
-								&& ligVoisin >= 0 && ligVoisin < this.nbLignes
-								&& colVoisin >= 0 && colVoisin < this.nbColonnes)
-						{
-							Balise voisin = this.balises[ligVoisin][colVoisin];
-							if (voisin != null)
-							{
-								courante.ajouterVoisin(voisin);
-								voisin.ajouterVoisin(courante);
-								trouveVoisin = true;
-							}
-							else
-							{
-								ligVoisin += dir[0];
-								colVoisin += dir[1];
-							}
-						}
-					}
-				}
+					this.relierVoisins(courante, lig, col);
 			}
 		}
 	}
 
 	/**
-	 * Sauvegarde le plateau dans un fichier {@code .data} structuré en quatre blocs :
-	 * <ul>
-	 *   <li>{@code GRILLE} – dimensions et compteurs</li>
-	 *   <li>{@code BIOMES} – biome de chaque case</li>
-	 *   <li>{@code BALISES} – position, numéro, biome et type de chaque balise</li>
-	 *   <li>{@code LIAISONS} – liste des voisins de chaque balise</li>
-	 * </ul>
+	 * Relie une balise à la première balise rencontrée dans chacune des huit
+	 * directions de la rose des vents (énumération {@link Direction}).
 	 *
-	 * @param nomFichier chemin du fichier de destination
-	 * @return {@code true} si l'écriture a réussi, {@code false} en cas d'erreur d'E/S
+	 * @param courante balise dont on calcule les voisins
+	 * @param lig      ligne de la balise courante
+	 * @param col      colonne de la balise courante
 	 */
-	public boolean sauvegarder(String nomFichier)
+	private void relierVoisins(Balise courante, int lig, int col)
 	{
-		try
+		for (Direction dir : Direction.values())
 		{
-			PrintWriter pw = new PrintWriter(new OutputStreamWriter(new FileOutputStream(nomFichier), "UTF8"));
-
-			/* En-tête : dimensions et nombres de la grille */
-			pw.println("GRILLE " + this.nbLignes + " " + this.nbColonnes + " " + this.nbBiome + " " + this.nbBalise);
-
-			/* Bloc biomes : le biome de chaque case (même les cases sans balise) */
-			pw.println("BIOMES");
-			if (this.tabStringBiome != null)
+			Balise voisin = this.premiereBaliseDansDirection(lig, col, dir);
+			if (voisin != null)
 			{
-				for (int lig = 0; lig < this.nbLignes; lig++)
-				{
-					for (int col = 0; col < this.nbColonnes; col++)
-					{
-						String nomBiome = this.tabStringBiome[lig][col];
-						if (nomBiome != null)
-						{
-							TypeBiome biome = TypeBiome.toNom(nomBiome);
-							if (biome != null)
-								pw.println(lig + " " + col + " " + biome.name());
-						}
-					}
-				}
+				courante.ajouterVoisin(voisin);
+				voisin.ajouterVoisin(courante);
 			}
-
-			/* Bloc balises : ligne colonne numero biome type [couleur si départ] */
-			pw.println("BALISES");
-			for (int lig = 0; lig < this.nbLignes; lig++)
-			{
-				for (int col = 0; col < this.nbColonnes; col++)
-				{
-					Balise b = this.balises[lig][col];
-					if (b != null)
-					{
-						String ligneFichier = lig + " " + col + " " + b.getNumero() + " " + b.getBiome().name();
-
-						if (b instanceof BaliseDepart)
-							ligneFichier += " DEPART " + ((BaliseDepart) b).getCouleur();
-						else
-							ligneFichier += " NORMALE";
-
-						pw.println(ligneFichier);
-					}
-				}
-			}
-
-			/* Bloc liaisons : ligne,colonne : voisin1,voisin2 ... */
-			pw.println("LIAISONS");
-			for (int lig = 0; lig < this.nbLignes; lig++)
-			{
-				for (int col = 0; col < this.nbColonnes; col++)
-				{
-					Balise b = this.balises[lig][col];
-					if (b != null)
-					{
-						String ligneFichier = lig + "," + col + " :";
-						for (Balise voisin : b.getVoisins())
-							ligneFichier += " " + voisin.getPosition().getLigne() + "," + voisin.getPosition().getColonne();
-
-						pw.println(ligneFichier);
-					}
-				}
-			}
-
-			pw.close();
-			return true;
-		}
-		catch (IOException e)
-		{
-			System.err.println("Erreur lors de la sauvegarde du plateau : " + e.getMessage());
-			return false;
 		}
 	}
 
 	/**
-	 * Retourne une représentation textuelle du plateau sous forme de grille ASCII.
-	 * Chaque cellule affiche le résultat de {@link Balise#toString()} ou est vide.
-	 * La largeur des cellules s'adapte à la représentation la plus longue.
+	 * Avance case par case depuis la position donnée dans une direction et
+	 * retourne la première balise rencontrée.
 	 *
-	 * @return la grille formatée en chaîne de caractères
+	 * @param lig ligne de départ
+	 * @param col colonne de départ
+	 * @param dir direction de parcours
+	 * @return la première {@link Balise} trouvée, ou {@code null} si l'on sort
+	 *         de la grille sans en rencontrer
 	 */
-	public String toString()
+	private Balise premiereBaliseDansDirection(int lig, int col, Direction dir)
 	{
-		/* Largeur maximale parmi toutes les représentations de balises */
-		int largeur = 1;
-		for (int lig = 0; lig < this.nbLignes; lig++)
-			for (int col = 0; col < this.nbColonnes; col++)
-			{
-				Balise b = this.balises[lig][col];
-				if (b != null && b.toString().length() > largeur)
-					largeur = b.toString().length();
-			}
+		int ligVoisin = lig + dir.getDLigne()  ;
+		int colVoisin = col + dir.getDColonne();
 
-		String sep = ("+-" + "-".repeat(largeur) + "-").repeat(this.nbColonnes) + "+\n";
-		String s   = sep;
-
-		for (int lig = 0; lig < this.nbLignes; lig++)
+		while (ligVoisin >= 0 && ligVoisin < this.nbLignes
+		    && colVoisin >= 0 && colVoisin < this.nbColonnes)
 		{
-			for (int col = 0; col < this.nbColonnes; col++)
-			{
-				Balise b       = this.balises[lig][col]        ;
-				String contenu = (b != null) ? b.toString() : "";
-				s += String.format("| %-" + largeur + "s ", contenu);
-			}
-			s += "|\n" + sep;
+			if (this.balises[ligVoisin][colVoisin] != null)
+				return this.balises[ligVoisin][colVoisin];
+
+			ligVoisin += dir.getDLigne()  ;
+			colVoisin += dir.getDColonne();
 		}
 
-		return s;
+		return null;
 	}
 }

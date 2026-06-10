@@ -55,6 +55,8 @@ public class Partie
 	 */
 	public void demarrer()
 	{
+		Manche premiereManche = this.nouvelleManche();
+		this.manches.add(premiereManche);
 	}
 
 	/**
@@ -64,7 +66,7 @@ public class Partie
 	 */
 	public Manche nouvelleManche()
 	{
-		return null;
+		return new Manche(this.numeroManche++, new Pioche());
 	}
 
 	/**
@@ -72,6 +74,18 @@ public class Partie
 	 */
 	public void terminerManche()
 	{
+		/* Calcule et cumule le score de la manche dans le score total du joueur. */
+		this.joueur.ajouterScoreManche();
+
+		/* Remet le joueur à zéro pour la prochaine manche. */
+		this.joueur.reinitialiserManche();
+
+		/* Si la partie n'est pas terminée, on crée et stocke la prochaine manche. */
+		if (!this.estTerminee())
+		{
+			Manche manche = this.nouvelleManche();
+			this.manches.add(manche);
+		}
 	}
 
 	/**
@@ -81,7 +95,8 @@ public class Partie
 	 */
 	public boolean estTerminee()
 	{
-		return false;
+		return this.manches.size() >= 5
+			&& this.manches.get(this.manches.size() - 1).estTerminee();
 	}
 
 	/**
@@ -91,6 +106,6 @@ public class Partie
 	 */
 	public int getScoreFinal()
 	{
-		return 0;
+		return this.joueur.getScoreTotal();
 	}
 }

@@ -16,6 +16,7 @@
 ./jeu/metier/Balise.java
 ./jeu/metier/BaliseDepart.java
 ./jeu/metier/Plateau.java
+./jeu/metier/GestionnairePlateau.java
 ./jeu/metier/Position.java
 ./jeu/metier/TypeBiome.java
 ./jeu/metier/Direction.java

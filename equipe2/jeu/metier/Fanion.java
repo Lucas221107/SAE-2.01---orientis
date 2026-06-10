@@ -77,14 +77,14 @@ public class Fanion
 
 	/**
 	 * Retourne une représentation textuelle du fanion sous la forme
-	 * {@code "Clair 5"}, {@code "Fonce 3"} ou {@code "Fonce ∞"} pour un joker.
+	 * {@code "Clair 5"}, {@code "Fonce 3"} ou {@code "Fonce 0"} pour un joker.
 	 *
 	 * @return chaîne représentant le fanion
 	 */
 	public String toString()
 	{
 		String type   = this.estFonce      ? "Fonce" : "Clair"          ;
-		String valeur = this.estJoker()     ? "∞"     : "" + this.numero ;
+		String valeur = this.estJoker()     ? "0"     : "" + this.numero ;
 
 		return type + " " + valeur;
 	}
