@@ -1,17 +1,13 @@
-./conception/Controleur.java
+./jeu/Controleur.java
 
-./conception/ihm/FramePrincipale.java
-./conception/ihm/PanelConfigJeux.java
-./conception/ihm/PanelPlateau.java
-./conception/ihm/PanelSelectionBiome.java
-./conception/ihm/PanelBalise.java
-./conception/ihm/PanelChoixBaliseDepart.java
-
-./conception/metier/Balise.java
-./conception/metier/BaliseDepart.java
-./conception/metier/Plateau.java
-./conception/metier/Position.java
-./conception/metier/TypeBiome.java
+./jeu/ihm/FrameAccueil.java
+./jeu/ihm/FramePrincipale.java
+./jeu/ihm/PanelAccueil.java
+./jeu/ihm/PanelDuo.java
+./jeu/ihm/PanelPioche.java
+./jeu/ihm/PanelPlateau.java
+./jeu/ihm/PanelRegle.java
+./jeu/ihm/PanelSolo.java
 
 ./jeu/metier/Balise.java
 ./jeu/metier/BaliseDepart.java
