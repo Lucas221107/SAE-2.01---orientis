@@ -6,10 +6,11 @@ import java.util.List;
 /**
  * Plateau de l'application de conception d'Orientis.
  * Construit un plateau prédéfini (biomes, balises, balises de départ),
- * calcule les liaisons entre balises (rose des vents).
+ * calcule les liaisons entre balises (rose des vents) et l'exporte dans un
+ * fichier .data.
  *
  * @author Groupe 2
- * @version 1.1
+ * @version 1.0
  */
 public class Plateau
 {
@@ -109,40 +110,45 @@ public class Plateau
 	 */
 	public List<BaliseDepart> getBalisesDepart()
 	{
-		List<BaliseDepart> resultat = new ArrayList<>();
+		List<BaliseDepart> departs = new ArrayList<BaliseDepart>();
+
+		if (this.balises == null)
+			return departs;
 
 		for (int lig = 0; lig < this.nbLignes; lig++)
 		{
 			for (int col = 0; col < this.nbColonnes; col++)
 			{
-				if (this.balises[lig][col] instanceof BaliseDepart)
-				{
-					resultat.add((BaliseDepart) this.balises[lig][col]);
-				}
+				Balise balise = this.balises[lig][col];
+				if (balise instanceof BaliseDepart)
+					departs.add((BaliseDepart) balise);
 			}
 		}
 
-		return resultat;
+		return departs;
 	}
+
+	/** @return le tableau des noms de biome par case (peut être {@code null}) */
+	public String[][] getTabStringBiome() { return this.tabStringBiome; }
 
 	/* - - - - - - - - - - - - - */
 	/* Modificateurs             */
 	/* - - - - - - - - - - - - - */
 
 	/** @param ligne nouveau nombre de lignes */
-	public void setLigne(int ligne)               { this.nbLignes       = ligne  ; }
+	public void setLigne(int ligne)             { this.nbLignes       = ligne  ; }
 
 	/** @param colonne nouveau nombre de colonnes */
-	public void setColonne(int colonne)           { this.nbColonnes     = colonne; }
+	public void setColonne(int colonne)         { this.nbColonnes     = colonne; }
 
 	/** @param tab tableau des numéros de balise par case */
-	public void setTabNumBalise(int[][] tab)      { this.tabNumBalise   = tab    ; }
+	public void setTabNumBalise(int[][] tab)    { this.tabNumBalise   = tab    ; }
 
 	/** @param tab tableau des noms de biome par case */
-	public void setTabStringBiome(String[][] tab) { this.tabStringBiome = tab    ; }
+	public void setTabStringBiome(String[][] tab) { this.tabStringBiome = tab  ; }
 
 	/** @param tab tableau booléen indiquant les cases de départ */
-	public void setTabDepart(boolean[][] tab)     { this.tabDepart      = tab    ; }
+	public void setTabDepart(boolean[][] tab)   { this.tabDepart      = tab    ; }
 
 	/**
 	 * Place une balise à la position donnée dans la grille.
@@ -183,19 +189,16 @@ public class Plateau
 				biome     = TypeBiome.toNom(this.tabStringBiome[lig][col]);
 				numBalise = this.tabNumBalise[lig][col]                   ;
 
-				/* Instancie une balise (normale ou de départ) si la case n'est pas vide */
+				/* Instancie une balise normale si la case n'est pas vide */
 				if (numBalise != 0)
 				{
-					if (this.tabDepart != null && this.tabDepart[lig][col])
-					{
-						/* Balise de départ */
-						this.setBalise(lig, col, new BaliseDepart(numBalise, biome, new Position(lig, col), "Rouge"));
-					}
-					else
-					{
-						/* Balise normale */
-						this.setBalise(lig, col, new Balise(numBalise, biome, new Position(lig, col)));
-					}
+					this.setBalise(lig, col, new Balise(numBalise, biome, new Position(lig, col)));
+				}
+
+				/* Remplace par une balise de départ si la case est marquée comme telle */
+				if (this.tabDepart != null && this.tabDepart[lig][col])
+				{
+					this.setBalise(lig, col, new BaliseDepart(numBalise, biome, new Position(lig, col), "Rouge"));
 				}
 			}
 		}
@@ -216,34 +219,57 @@ public class Plateau
 			{
 				Balise courante = this.balises[lig][col];
 				if (courante != null)
-				{
-					for (Direction dir : Direction.values())
-					{
-						int     ligVoisin    = lig + dir.getDLigne()  ;
-						int     colVoisin    = col + dir.getDColonne() ;
-						boolean trouveVoisin = false                   ;
-
-						/* Avance dans la direction jusqu'à trouver une balise ou sortir */
-						while (!trouveVoisin
-								&& ligVoisin >= 0 && ligVoisin < this.nbLignes
-								&& colVoisin >= 0 && colVoisin < this.nbColonnes)
-						{
-							Balise voisin = this.balises[ligVoisin][colVoisin];
-							if (voisin != null)
-							{
-								courante.ajouterVoisin(voisin);
-								voisin.ajouterVoisin(courante);
-								trouveVoisin = true;
-							}
-							else
-							{
-								ligVoisin += dir.getDLigne()  ;
-								colVoisin += dir.getDColonne() ;
-							}
-						}
-					}
-				}
+					this.relierVoisins(courante, lig, col);
 			}
 		}
+	}
+
+	/**
+	 * Relie une balise à la première balise rencontrée dans chacune des huit
+	 * directions de la rose des vents (énumération {@link Direction}).
+	 *
+	 * @param courante balise dont on calcule les voisins
+	 * @param lig      ligne de la balise courante
+	 * @param col      colonne de la balise courante
+	 */
+	private void relierVoisins(Balise courante, int lig, int col)
+	{
+		for (Direction dir : Direction.values())
+		{
+			Balise voisin = this.premiereBaliseDansDirection(lig, col, dir);
+			if (voisin != null)
+			{
+				courante.ajouterVoisin(voisin);
+				voisin.ajouterVoisin(courante);
+			}
+		}
+	}
+
+	/**
+	 * Avance case par case depuis la position donnée dans une direction et
+	 * retourne la première balise rencontrée.
+	 *
+	 * @param lig ligne de départ
+	 * @param col colonne de départ
+	 * @param dir direction de parcours
+	 * @return la première {@link Balise} trouvée, ou {@code null} si l'on sort
+	 *         de la grille sans en rencontrer
+	 */
+	private Balise premiereBaliseDansDirection(int lig, int col, Direction dir)
+	{
+		int ligVoisin = lig + dir.getDLigne()  ;
+		int colVoisin = col + dir.getDColonne();
+
+		while (ligVoisin >= 0 && ligVoisin < this.nbLignes
+		    && colVoisin >= 0 && colVoisin < this.nbColonnes)
+		{
+			if (this.balises[ligVoisin][colVoisin] != null)
+				return this.balises[ligVoisin][colVoisin];
+
+			ligVoisin += dir.getDLigne()  ;
+			colVoisin += dir.getDColonne();
+		}
+
+		return null;
 	}
 }

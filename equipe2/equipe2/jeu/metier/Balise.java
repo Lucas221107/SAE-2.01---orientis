@@ -4,6 +4,10 @@ import java.util.ArrayList;
 
 /**
  * Représente une balise positionnée sur le plateau d'Orientis.
+ * <p>
+ * Le plateau étant partagé par tous les joueurs, l'état « visitée » n'est pas
+ * porté par la balise mais par chaque {@link Joueur} : une balise est visitée
+ * par un joueur si elle figure parmi ses balises capturées.
  *
  * @author Groupe 2
  * @version 1.0
@@ -20,9 +24,6 @@ public class Balise
 	/** Biome associé à la balise (détermine sa couleur et son type de terrain). */
 	private TypeBiome biome;
 
-	/** Indique si la balise a déjà été visitée par un joueur. */
-	private boolean visitee;
-
 	/** Position de la balise sur le plateau (ligne, colonne). */
 	private Position position;
 
@@ -35,7 +36,7 @@ public class Balise
 
 	/**
 	 * Construit une balise avec son numéro, son biome et sa position.
-	 * La balise est initialement non visitée et sans voisins.
+	 * La balise est initialement sans voisins.
 	 *
 	 * @param numero   numéro unique de la balise
 	 * @param biome    type de biome associé
@@ -46,7 +47,6 @@ public class Balise
 		this.numero   = numero                  ;
 		this.biome    = biome                   ;
 		this.position = position                ;
-		this.visitee  = false                   ;
 		this.voisins  = new ArrayList<Balise>() ;
 	}
 
@@ -66,9 +66,6 @@ public class Balise
 	/** @return la liste des balises voisines */
 	public ArrayList<Balise> getVoisins ()              { return this.voisins                 ; }
 
-	/** @return {@code true} si la balise a été visitée, {@code false} sinon */
-	public boolean           estVisitee ()              { return this.visitee                 ; }
-
 	/**
 	 * Vérifie si une balise donnée est voisine de celle-ci.
 	 *
@@ -80,13 +77,6 @@ public class Balise
 	/* - - - - - - - - - - - - - */
 	/* Modificateurs             */
 	/* - - - - - - - - - - - - - */
-
-	/**
-	 * Modifie l'état de visite de la balise.
-	 *
-	 * @param visitee {@code true} pour marquer la balise comme visitée
-	 */
-	public void setVisitee(boolean visitee) { this.visitee = visitee; }
 
 	/**
 	 * Ajoute une balise voisine si elle n'est pas déjà présente dans la liste.
@@ -110,8 +100,8 @@ public class Balise
 	 */
 	public String toString()
 	{
-		char premiereLettreColeur = Character.toUpperCase(this.biome.getCouleur().toString().charAt(0));
+		char premiereLettreCouleur = Character.toUpperCase(this.biome.getCouleur().toString().charAt(0));
 
-		return "" + premiereLettreColeur + this.numero;
+		return "" + premiereLettreCouleur + this.numero;
 	}
 }

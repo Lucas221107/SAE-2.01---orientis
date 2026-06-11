@@ -74,7 +74,7 @@ public class Pioche
 	 * 5 foncés numérotés de 1 à 5, plus 2 jokers de numéro 0 : un clair et un
 	 * foncé), puis la mélange.
 	 */
-	public void reconstituer()
+	public Pioche reconstituer()
 	{
 		this.fanions.clear();
 
@@ -89,6 +89,6 @@ public class Pioche
 		this.fanions.add(new Fanion(0, false));
 		this.fanions.add(new Fanion(0, true ));
 
-		this.melanger();
+		return this.melanger();
 	}
 }
