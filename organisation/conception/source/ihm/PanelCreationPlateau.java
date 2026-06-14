@@ -1,3 +1,6 @@
+package source.ihm;
+
+import source.Controleur;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;

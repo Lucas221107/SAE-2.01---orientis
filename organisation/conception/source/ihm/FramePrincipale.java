@@ -1,4 +1,4 @@
-import conception.source.Controleur ;
+package conception.source.ihm ;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.BorderLayout;
