@@ -6,7 +6,6 @@ import javax.swing.*;
 
 import java.awt.event.*;
 import java.awt.Color;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
