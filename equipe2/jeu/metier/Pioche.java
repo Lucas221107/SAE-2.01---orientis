@@ -20,17 +20,21 @@ public class Pioche
 	/** Liste des fanions encore présents dans la pioche. */
 	private ArrayList<Fanion> fanions;
 
+	/** Nombre de manche pour avoir le nombre de fanion */
+	private int nbManche;
+
 	/* - - - - - - - - - - - - - */
 	/* Constructeur              */
 	/* - - - - - - - - - - - - - */
 
 	/**
 	 * Construit une pioche vide. Les fanions sont ajoutés ensuite via
-	 * {@link #reconstituer()}.
+	 * la methode reconstituer.
 	 */
-	public Pioche()
+	public Pioche( int nbManche )
 	{
-		this.fanions = new ArrayList<Fanion>();
+		this.fanions  = new ArrayList<Fanion>();
+		this.nbManche = nbManche;
 	}
 
 	/* - - - - - - - - - - - - - */
@@ -70,16 +74,16 @@ public class Pioche
 	}
 
 	/**
-	 * Reconstitue la pioche avec l'ensemble complet des fanions (5 clairs,
-	 * 5 foncés numérotés de 1 à 5, plus 2 jokers de numéro 0 : un clair et un
+	 * Reconstitue la pioche avec l'ensemble complet des fanions (nbManche clairs,
+	 * nbManche foncés numérotés de 1 à nbManche, plus 2 jokers de numéro 0 : un clair et un
 	 * foncé), puis la mélange.
 	 */
 	public void reconstituer()
 	{
 		this.fanions.clear();
 
-		/* 5 fanions clairs et 5 fanions fonces, numerotes de 1 a 5. */
-		for (int cpt = 1; cpt <= 5; cpt++)
+		/* nbManche fanions clairs et nbManche fanions fonces, numerotes de 1 à nbManche. */
+		for (int cpt = 1; cpt <= this.nbManche ; cpt++)
 		{
 			this.fanions.add(new Fanion(cpt, false)); // clair
 			this.fanions.add(new Fanion(cpt, true )); // fonce

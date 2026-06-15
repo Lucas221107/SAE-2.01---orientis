@@ -100,6 +100,9 @@ public class Chemin
 	{
 		for (Segment trace : this.segments)
 		{
+			if ( trace.estIdentique(segment))
+				return true;
+			
 			if (trace.seCroisent(segment))
 				return true;
 		}

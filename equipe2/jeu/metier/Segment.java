@@ -51,7 +51,6 @@ public class Segment
 
 	/**
 	 * Indique si ce segment en croise un autre.
-	 * <p>
 	 * Deux segments qui partagent une balise (extrémité commune) ne sont pas
 	 * considérés comme se croisant : ils se rejoignent, ce qui est autorisé
 	 * pour prolonger un chemin. Sinon, on applique le test géométrique
@@ -108,6 +107,13 @@ public class Segment
 		if (val > 0) return  1;
 		if (val < 0) return -1;
 		return 0;
+	}
+
+
+	public boolean estIdentique( Segment autre )
+	{
+		return ( this.depart == autre.depart  && this.arrivee == autre.arrivee ) ||
+		       ( this.depart == autre.arrivee && this.arrivee == autre.depart  );
 	}
 
 	/**

@@ -41,6 +41,10 @@ public class Joueur
 	/** Balises capturées par le joueur durant la manche courante. */
 	private ArrayList<Balise> balisesCapturees;
 
+	private boolean aJoue;
+
+	private Chemin cheminGlobal; 
+
 	/* - - - - - - - - - - - - - */
 	/* Constructeur              */
 	/* - - - - - - - - - - - - - */
@@ -63,6 +67,8 @@ public class Joueur
 		this.baliseDepart     = baliseDepart            ;
 		this.chemin           = new Chemin()            ;
 		this.balisesCapturees = new ArrayList<Balise>() ;
+		this.aJoue            = true                    ;
+		this.cheminGlobal     = new Chemin()            ;
 	}
 
 	/* - - - - - - - - - - - - - */
@@ -95,6 +101,18 @@ public class Joueur
 		return meilleur;
 	}
 
+
+	public void setBaliseDepart ( BaliseDepart baliseDepart )
+	{
+		this.baliseDepart = baliseDepart;
+	}
+
+
+
+
+	public boolean peutPiocher()  { return this.aJoue ; }
+	public void    setAJoue   ()  { this.aJoue = true ; }
+	public void    setAPioche ()  { this.aJoue = false; }
 	/* - - - - - - - - - - - - - */
 	/* Methodes                  */
 	/* - - - - - - - - - - - - - */
@@ -109,6 +127,8 @@ public class Joueur
 	{
 		/* On trace le segment du depart vers la balise capturee. */
 		this.chemin.ajouterSegment(new Segment(depart, arrivee));
+
+		this.cheminGlobal.ajouterSegment(new Segment(depart, arrivee));
 
 		/* La balise capturee est comptabilisee : elle devient "visitee" pour ce joueur. */
 		this.balisesCapturees.add(arrivee);
@@ -133,6 +153,19 @@ public class Joueur
 			}
 		}
 		return false;
+	}
+
+
+
+	public boolean estDejaJouee ( Balise balise )
+	{
+		return this.aVisite(balise);
+	}
+
+
+	public boolean segmentSeCroise( Balise depart, Balise arrive )
+	{
+		return this.cheminGlobal.croise( new Segment(depart, arrive));
 	}
 
 	/**
@@ -163,6 +196,19 @@ public class Joueur
 		}
 		return this.chemin.getExtremites();
 	}
+
+	public boolean estExtremiteJouable ( Balise balise)
+	{
+		// si chemin vide, seule la balise de départ est jouable
+		if ( this.chemin.estVide())
+			return balise == this.baliseDepart;
+
+		// sinon, la balise doit etre sur une extremité du chemin 
+		List<Balise> extremites = this.chemin.getExtremites();
+    	return extremites.contains(balise) || balise == this.baliseDepart && extremites.contains(this.baliseDepart);
+	}
+
+	public BaliseDepart getBaliseDepart() { return this.baliseDepart ; }
 
 	/**
 	 * Indique si capturer la balise destination depuis la balise départ constitue
@@ -210,7 +256,7 @@ public class Joueur
 		}
 
 		/* Score = nb max de balises dans un seul biome  x  nb de biomes decouverts. */
-		return maxDansUnBiome * nbBiomes;
+		return maxDansUnBiome * (nbBiomes + 1);
 	}
 
 	/**
@@ -234,5 +280,6 @@ public class Joueur
 	{
 		this.chemin.effacer();
 		this.balisesCapturees.clear();
+		this.aJoue = true;
 	}
 }

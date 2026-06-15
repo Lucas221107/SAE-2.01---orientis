@@ -57,8 +57,7 @@ public class Position
 	 * Deux positions sont égales si elles ont la même ligne et la même colonne.
 	 *
 	 * @param o l'objet à comparer
-	 * @return {@code true} si {@code o} est une {@code Position} avec les mêmes coordonnées,
-	 *         {@code false} sinon
+	 * @return {@code true} si {@code o} est une {@code Position} avec les mêmes coordonnées
 	 */
 	public boolean equals ( Object o )
 	{

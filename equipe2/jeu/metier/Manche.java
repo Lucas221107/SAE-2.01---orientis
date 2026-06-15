@@ -19,6 +19,9 @@ public class Manche
 	/** Nombre de fanions foncés déjà tirés durant la manche. */
 	private int nbFoncesTires;
 
+	/** Nombre total de manches de la partie (sert à calculer le seuil de fin de manche). */
+	private int nbManche;
+
 	/** Pioche de fanions utilisée pendant la manche. */
 	private Pioche pioche;
 
@@ -37,12 +40,13 @@ public class Manche
 	 * @param numero numéro de la manche
 	 * @param pioche pioche de fanions de la manche
 	 */
-	public Manche(int numero, Pioche pioche)
+	public Manche(int numero, Pioche pioche, int nbManche)
 	{
-		this.numero        = numero;
-		this.nbFoncesTires = 0     ;
-		this.pioche        = pioche;
-		this.fanionCourant = null  ;
+		this.numero        = numero  ;
+		this.nbFoncesTires = 0       ;
+		this.nbManche      = nbManche;
+		this.pioche        = pioche  ;
+		this.fanionCourant = null    ;
 	}
 
 	/* - - - - - - - - - - - - - */
@@ -67,6 +71,21 @@ public class Manche
 		return this.fanionCourant;
 	}
 
+
+	/**
+	 * Reinitialise le fanion pioché à {@Code null}
+	 */
+	public void reinitialiserFanionCourant()
+	{
+		this.fanionCourant = null ;
+	}
+	
+
+	/**
+	 * @return le fanion pioché
+	 */
+	public Fanion getFanionCourant() { return this.fanionCourant; }
+
 	/**
 	 * Indique si la manche est terminée (sixième fanion foncé tiré, ou pioche vide).
 	 *
@@ -74,6 +93,6 @@ public class Manche
 	 */
 	public boolean estTerminee()
 	{
-		return this.nbFoncesTires >= 6 || this.pioche.estVide();
+		return this.nbFoncesTires >= this.nbManche + 1 || this.pioche.estVide();
 	}
 }

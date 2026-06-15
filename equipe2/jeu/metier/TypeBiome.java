@@ -11,34 +11,15 @@ import java.awt.Color;
  */
 public enum TypeBiome
 {
-	/** Forêt claire, teinte verte soutenue. */
 	FORET     ("Forêt claire", new Color(  34, 139,  34) ),
-
-	/** Vallée, teinte grise neutre. */
 	VALLEE    ("Vallée"      , new Color(  85,  85,  85) ),
-
-	/** Clairière, teinte vert pâle. */
 	CLAIRIERE ("Clairière"   , new Color( 144, 238, 144) ),
-
-	/** Lande, teinte brun rosé. */
 	LANDE     ("Lande"       , new Color( 188, 143, 143) ),
-
-	/** Montagne, teinte gris clair. */
 	MONTAGNE  ("Montagne"    , new Color( 169, 169, 169) ),
-
-	/** Marais, teinte vert foncé. */
 	MARAIS    ("Marais"      , new Color(  47,  79,  47) ),
-
-	/** Lac, teinte bleu ciel. */
 	LAC       ("Lac"         , new Color(  64, 164, 223) ),
-
-	/** Zone urbaine, teinte rouge brique. */
 	URBAIN    ("Urbain"      , new Color( 169,  68,  66) ),
-
-	/** Zone industrielle, teinte bleu acier. */
 	INDUSTRIEL("Industriel"  , new Color( 100, 181, 246) ),
-
-	/** Dune, teinte beige sableux. */
 	DUNE      ("Dune"        , new Color( 210, 180, 140) );
 
 	/* - - - - - - - - - - - - - */
@@ -74,7 +55,7 @@ public enum TypeBiome
 	/**
 	 * Retourne le nom lisible de ce biome.
 	 *
-	 * @return le nom du biome (ex. {@code "Forêt claire"})
+	 * @return le nom du biome
 	 */
 	public String getNom    () { return this.nom    ; }
 
@@ -110,7 +91,7 @@ public enum TypeBiome
 	 * Recherche le biome correspondant à un nom donné.
 	 * Compare le nom passé en paramètre avec celui de chaque constante.
 	 *
-	 * @param nom le nom à rechercher (ex. {@code "Vallée"})
+	 * @param nom le nom à rechercher
 	 * @return le {@code TypeBiome} dont le nom correspond à {@code nom},
 	 *         ou {@code null} si aucune correspondance n'est trouvée
 	 */

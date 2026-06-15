@@ -49,7 +49,7 @@ public class Plateau
 	/**
 	 * Construit un plateau vide avec les dimensions et compteurs donnés.
 	 * Les tableaux de configuration (biomes, numéros, départs) doivent être
-	 * fournis ensuite via les modificateurs avant d'appeler {@link #genererPlateau()}.
+	 * fournis ensuite via les modificateurs.
 	 *
 	 * @param nbLignes   nombre de lignes de la grille
 	 * @param nbColonnes nombre de colonnes de la grille
@@ -88,9 +88,9 @@ public class Plateau
 	 * Retourne la balise à la position donnée, ou {@code null} si la case est vide
 	 * ou si les coordonnées sont hors limites.
 	 *
-	 * @param ligne   indice de ligne (0-indexé)
-	 * @param colonne indice de colonne (0-indexé)
-	 * @return la {@link Balise} à cette position, ou {@code null}
+	 * @param ligne   indice de ligne 
+	 * @param colonne indice de colonne 
+	 * @return la  Balise à cette position, ou {@code null}
 	 */
 	public Balise getBalise(int ligne, int colonne)
 	{
@@ -106,7 +106,7 @@ public class Plateau
 	/**
 	 * Retourne la liste de toutes les balises de départ présentes sur le plateau.
 	 *
-	 * @return liste des {@link BaliseDepart}, vide si aucune n'existe
+	 * @return liste des  BaliseDepart, vide si aucune n'existe
 	 */
 	public List<BaliseDepart> getBalisesDepart()
 	{
@@ -128,7 +128,7 @@ public class Plateau
 		return departs;
 	}
 
-	/** @return le tableau des noms de biome par case (peut être {@code null}) */
+	/** @return le tableau des noms de biome par case (peut être  null) */
 	public String[][] getTabStringBiome() { return this.tabStringBiome; }
 
 	/* - - - - - - - - - - - - - */
@@ -172,7 +172,7 @@ public class Plateau
 
 	/**
 	 * Génère le plateau à partir des tableaux de configuration :
-	 * instancie les {@link Balise} et {@link BaliseDepart} à leurs positions,
+	 * instancie les Balises et BaliseDepart à leurs positions,
 	 * puis calcule les liaisons entre voisins.
 	 */
 	public void genererPlateau()
@@ -226,7 +226,7 @@ public class Plateau
 
 	/**
 	 * Relie une balise à la première balise rencontrée dans chacune des huit
-	 * directions de la rose des vents (énumération {@link Direction}).
+	 * directions de la rose des vents.
 	 *
 	 * @param courante balise dont on calcule les voisins
 	 * @param lig      ligne de la balise courante
@@ -252,7 +252,7 @@ public class Plateau
 	 * @param lig ligne de départ
 	 * @param col colonne de départ
 	 * @param dir direction de parcours
-	 * @return la première {@link Balise} trouvée, ou {@code null} si l'on sort
+	 * @return la première Balise trouvée, ou {@code null} si l'on sort
 	 *         de la grille sans en rencontrer
 	 */
 	private Balise premiereBaliseDansDirection(int lig, int col, Direction dir)

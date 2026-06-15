@@ -13,12 +13,6 @@ import java.util.List;
  */
 public class Partie
 {
-	/* - - - - - - - - - - - - - */
-	/* Constantes                */
-	/* - - - - - - - - - - - - - */
-
-	/** Nombre de manches que compte une partie. */
-	public static final int NB_MANCHES = 5;
 
 	/* - - - - - - - - - - - - - */
 	/* Attributs                 */
@@ -39,6 +33,8 @@ public class Partie
 	/** Liste des manches de la partie. */
 	private ArrayList<Manche> manches;
 
+	private int nbManche;
+
 	/* - - - - - - - - - - - - - */
 	/* Constructeur              */
 	/* - - - - - - - - - - - - - */
@@ -56,6 +52,7 @@ public class Partie
 		this.numeroManche        = 0;
 		this.joueurs             = joueurs;
 		this.indiceJoueurCourant = 0;
+		this.nbManche            = plateau.getBalisesDepart().size();
 		this.plateau             = plateau;
 		this.manches             = new ArrayList<Manche>();
 	}
@@ -78,6 +75,8 @@ public class Partie
 
 	/** @return le plateau de jeu */
 	public Plateau getPlateau() { return this.plateau; }
+
+	public int getNbManche() { return this.nbManche ; }
 
 	/**
 	 * @return la manche en cours (dernière de la liste), ou {@code null}
@@ -116,11 +115,11 @@ public class Partie
 	public Manche nouvelleManche()
 	{
 		/* Chaque manche repart d'une pioche complète et mélangée. */
-		Pioche pioche = new Pioche();
+		Pioche pioche = new Pioche( this.nbManche );
 		pioche.reconstituer();
 
 		this.numeroManche++;
-		Manche manche = new Manche(this.numeroManche, pioche);
+		Manche manche = new Manche(this.numeroManche, pioche, this.nbManche);
 		this.manches.add(manche);
 
 		return manche;
@@ -140,6 +139,8 @@ public class Partie
 
 		if (!this.estTerminee())
 			this.nouvelleManche();
+
+		System.out.println( "nouvelle manche ");
 	}
 
 	/**
@@ -149,7 +150,9 @@ public class Partie
 	 */
 	public boolean estTerminee()
 	{
-		return this.manches.size() >= NB_MANCHES
+		System.out.println("La partie est terminée");
+		
+		return this.manches.size() >= this.nbManche
 		    && this.getMancheCourante().estTerminee();
 	}
 
@@ -168,10 +171,10 @@ public class Partie
 
 	/**
 	 * Détermine le ou les gagnants de la partie. Comparaison dans l'ordre :
-	 * <ol>
-	 *   <li>le plus grand score total ;</li>
-	 *   <li>en cas d'égalité, le meilleur score réalisé sur une seule manche.</li>
-	 * </ol>
+	 *
+	 * le plus grand score total ;
+	 * en cas d'égalité, le meilleur score réalisé sur une seule manche.
+	 * 
 	 * Si plusieurs joueurs restent à égalité parfaite, ils sont tous gagnants
 	 * (victoire partagée, pas de tirage au sort). En solo, l'unique joueur est
 	 * toujours renvoyé.
