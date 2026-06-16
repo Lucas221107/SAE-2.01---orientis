@@ -1,7 +1,7 @@
 ./conception/Controleur.java
 
 ./conception/ihm/FramePrincipale.java
-./conception/ihm/PanelConfigjeux.java
+./conception/ihm/PanelConfigJeux.java
 ./conception/ihm/PanelPlateau.java
 ./conception/ihm/PanelSelectionBiome.java
 ./conception/ihm/PanelBalise.java
