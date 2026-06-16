@@ -312,9 +312,8 @@ public class Controleur
 
 			for (int i = 0; i < this.metier.getJoueurs().size(); i++)
 			{
-				int indexBalise = index + i;
-				if (indexBalise < lstBaliseDeparts.size())
-					this.metier.getJoueurs().get(i).setBaliseDepart(lstBaliseDeparts.get(indexBalise));
+				int indexBalise = (index + i) % lstBaliseDeparts.size(); // <- boucle sur la premiere balise de depart une fois la derniere atteinte
+				this.metier.getJoueurs().get(i).setBaliseDepart(lstBaliseDeparts.get(indexBalise));
 			}
 		}
 	}
@@ -489,8 +488,9 @@ public class Controleur
 			return;
 
 		List<Joueur> lstJoueurs = new ArrayList<>();
+		int indexJ2 = 1 % lstBaliseDeparts.size(); // <- revient a la premiere balise de depart si la liste n'en contient qu'une seule
 		lstJoueurs.add(new Joueur(nomJ1, lstBaliseDeparts.get(0).getCouleur(), lstBaliseDeparts.get(0)));
-		lstJoueurs.add(new Joueur(nomJ2, lstBaliseDeparts.get(1).getCouleur(), lstBaliseDeparts.get(1)));
+		lstJoueurs.add(new Joueur(nomJ2, lstBaliseDeparts.get(indexJ2).getCouleur(), lstBaliseDeparts.get(indexJ2)));
 
 		this.metier = new Partie(lstJoueurs, this.plateau);
 		this.metier.demarrer();
